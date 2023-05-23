@@ -13,6 +13,7 @@ app.use(express.json());
 // 设置端口号
 const PORT = 3001;
 const { OpenAIStream } = require('./openAIStream');
+const similarText = require('./similarText');
 
 // 设置路由
 app.post('/lessonPlan', async (req, res) => {
@@ -40,6 +41,12 @@ app.post('/lessonPlan', async (req, res) => {
   // 将Readable流发送给前端
   nodeStream.pipe(res);
 });
+
+app.get('/similarText', async(req, res) => {
+  const params = req.query;
+  const response = await similarText(params);
+  res.send(response)
+})
 
 // 启动服务器
 app.listen(PORT, () => {
