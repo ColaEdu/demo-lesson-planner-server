@@ -33,7 +33,6 @@ app.post('/lessonPlan', async (req, res) => {
   const temperatureToUse = 0;
   // 获取请求参数
   const queryParams = req.body;
-  console.log('queryParams--', queryParams)
   const messagesToSend = queryParams.messages;
   const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
   // 将ReadableStream对象转换为Readable流

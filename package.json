@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --experimental-fetch app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,9 @@
     "dotenv": "^16.0.3",
     "eventsource-parser": "^1.0.0",
     "express": "^4.18.2",
-    "stream": "^0.0.2"
+    "hnswlib-node": "^1.4.2",
+    "langchain": "^0.0.78",
+    "stream": "^0.0.2",
+    "uuid": "^9.0.0"
   }
 }
