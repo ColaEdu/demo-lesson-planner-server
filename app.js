@@ -14,7 +14,7 @@ app.use(express.json());
 const PORT = 3001;
 const { OpenAIStream } = require('./openAIStream');
 const similarText = require('./similarText');
-
+console.log('OPENAI_API_KEY==', process.env.OPENAI_API_KEY)
 // 设置路由
 app.post('/lessonPlan', async (req, res) => {
   const model = {
