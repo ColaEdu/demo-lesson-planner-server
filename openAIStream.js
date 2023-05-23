@@ -13,6 +13,7 @@ class OpenAIError extends Error {
 const OPENAI_API_TYPE = 'openai';
 const AZURE_DEPLOYMENT_ID = '';
 const OPENAI_API_HOST = 'https://api.openai.com';
+const OPENAI_ORGANIZATION = '';
 
 const OpenAIStream = async (
   model,

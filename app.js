@@ -1,12 +1,18 @@
 // 导入所需的库
 const express = require('express');
 const cors = require('cors');
+const { Readable } = require('stream');
+// 导入dotenv库
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 app.use(cors())
+app.use(express.json());
 
 // 设置端口号
 const PORT = 3001;
-const { OpenAIStream } = require('./OpenAIStream');
+const { OpenAIStream } = require('./openAIStream');
 
 // 设置路由
 app.post('/lessonPlan', async (req, res) => {
@@ -24,12 +30,16 @@ app.post('/lessonPlan', async (req, res) => {
     ## 六、教学资源准备
     ## 七、教学过程
   `
-  const temperatureToUse  = 0;
-    // 获取请求参数
+  const temperatureToUse = 0;
+  // 获取请求参数
   const queryParams = req.body;
-  const messagesToSend = queryParams.messags;
+  console.log('queryParams--', queryParams)
+  const messagesToSend = queryParams.messages;
   const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
-  res.send(stream)
+  // 将ReadableStream对象转换为Readable流
+  const nodeStream = Readable.from(stream);
+  // 将Readable流发送给前端
+  nodeStream.pipe(res);
 });
 
 // 启动服务器
