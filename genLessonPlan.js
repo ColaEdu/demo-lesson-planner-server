@@ -1,5 +1,6 @@
 const { Readable } = require('stream');
 const { OpenAIStream } = require('./openAIStream');
+const getKey = require('./getKey');
 
 const saveToDb = async (data) => {
   await fetch('https://y42h83s1qy.hk.aircode.run/saveLessonPlanner', {
@@ -30,7 +31,10 @@ const genLessonPlan = async (req, res) => {
   // 获取请求参数
   const queryParams = req.body;
   const messagesToSend = queryParams.messages;
-  const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
+  const openaiKey = getKey();
+  console.log('openaiKey--', openaiKey)
+  const stream = await OpenAIStream(model, promptToSend, temperatureToUse, openaiKey.key, messagesToSend);
+  openaiKey.release();
   // 将ReadableStream对象转换为Readable流
   const nodeStream = Readable.from(stream);
    // Create an array to hold the data
