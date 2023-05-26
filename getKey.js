@@ -1,7 +1,7 @@
 const keyMap = {
-  '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': 0,
-  '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': 0,
-  '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': 0
+  [process.env.OPENAI_API_KEY1]: 0,
+  [process.env.OPENAI_API_KEY2]: 0,
+  [process.env.OPENAI_API_KEY3]: 0,
 };
 
 class OpenAIKey {
