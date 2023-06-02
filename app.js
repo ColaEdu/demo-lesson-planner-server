@@ -32,6 +32,8 @@ app.post('/ai', async(req, res) => {
   const queryParams = req.body;
   const messagesToSend = queryParams.messages;
   const promptToSend = queryParams.systemMessages;
+  console.log('promptToSend--', promptToSend)
+  console.log('messagesToSend--', messagesToSend)
   const openaiKey = getKey();
   // console.log('openaiKey--', openaiKey)
   const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
