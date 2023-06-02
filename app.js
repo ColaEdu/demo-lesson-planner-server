@@ -14,14 +14,38 @@ app.use(express.static('public'));
 const PORT = 3001;
 const similarText = require('./similarText');
 const genLessonPlan = require('./genLessonPlan');
+// stream openai
+const { Readable } = require('stream');
+const { OpenAIStream } = require('./openAIStream');
+const getKey = require('./getKey');
 // 生成教案
 app.post('/lessonPlan', genLessonPlan);
+// 调用openai-proxy
+app.post('/ai', async(req, res) => {
+  const model = {
+    id: 'gpt-3.5-turbo',
+    name: 'gpt-3.5-turbo'
+  }
 
+  const temperatureToUse = 0;
+  // 获取请求参数
+  const queryParams = req.body;
+  const messagesToSend = queryParams.messages;
+  const promptToSend = queryParams.systemMessages;
+  const openaiKey = getKey();
+  // console.log('openaiKey--', openaiKey)
+  const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
+  // openaiKey.release();
+  // 将ReadableStream对象转换为Readable流
+  const nodeStream = Readable.from(stream);
+  // 将Readable流发送给前端
+  nodeStream.pipe(res);
+});
 app.get('/similarText', async(req, res) => {
   const params = req.query;
   const response = await similarText(params);
   res.send(response)
-})
+});
 
 // 启动服务器
 app.listen(PORT, () => {

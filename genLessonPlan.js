@@ -20,7 +20,7 @@ const genLessonPlan = async (req, res) => {
   const promptToSend = `你是一个教案生成器，无需为我回复其他，只需根据用户要求按标准教案格式回复，在每个二级标题下面按统一格式插入生成的内容，一份标准的教案格式如下：
     # 《{课文标题}》教案
     ## 一、教材分析
-    ## 二、教学目标
+    ## 二、核心素养
     ## 三、教学重点
     ## 四、教学难点
     ## 五、课时安排
@@ -32,9 +32,9 @@ const genLessonPlan = async (req, res) => {
   const queryParams = req.body;
   const messagesToSend = queryParams.messages;
   const openaiKey = getKey();
-  console.log('openaiKey--', openaiKey)
-  const stream = await OpenAIStream(model, promptToSend, temperatureToUse, openaiKey.key, messagesToSend);
-  openaiKey.release();
+  // console.log('openaiKey--', openaiKey)
+  const stream = await OpenAIStream(model, promptToSend, temperatureToUse, '', messagesToSend);
+  // openaiKey.release();
   // 将ReadableStream对象转换为Readable流
   const nodeStream = Readable.from(stream);
    // Create an array to hold the data
