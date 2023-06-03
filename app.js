@@ -42,6 +42,7 @@ app.post('/ai', async(req, res) => {
   // 如果不使用流输出，直接返回结果
   if (closeStream) {
     res.send(stream)
+    return;
   }
   // openaiKey.release();
   // 将ReadableStream对象转换为Readable流
