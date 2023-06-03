@@ -78,7 +78,7 @@ const OpenAIStream = async (
   }
 
   if (closeStream) {
-    const result = res.json();
+    const result = await res.json();
     return result;
   }
 
