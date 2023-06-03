@@ -52,7 +52,7 @@ const OpenAIStream = async (
       ],
       max_tokens: 1000,
       temperature: temperature,
-      stream: true,
+      stream: closeStream ? false : true,
     }),
   });
  
