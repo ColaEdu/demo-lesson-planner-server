@@ -21,6 +21,7 @@ const OpenAIStream = async (
   temperature,
   key,
   messages,
+  closeStream,
 ) => {
   let url = `${OPENAI_API_HOST}/v1/chat/completions`;
   if (OPENAI_API_TYPE === 'azure') {
@@ -54,7 +55,7 @@ const OpenAIStream = async (
       stream: true,
     }),
   });
-
+ 
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -74,6 +75,11 @@ const OpenAIStream = async (
         }`,
       );
     }
+  }
+
+  if (closeStream) {
+    const result = res.json();
+    return result;
   }
 
   const stream = new ReadableStream({
