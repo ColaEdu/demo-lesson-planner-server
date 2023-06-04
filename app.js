@@ -18,7 +18,7 @@ const genLessonPlan = require('./genLessonPlan');
 const { Readable } = require('stream');
 const { OpenAIStream } = require('./openAIStream');
 const getKey = require('./getKey');
-const genPdf = require('./genPdf');
+// const genPdf = require('./genPdf');
 // 生成教案
 app.post('/lessonPlan', genLessonPlan);
 // 调用openai-proxy
@@ -56,7 +56,8 @@ app.get('/similarText', async(req, res) => {
   const response = await similarText(params);
   res.send(response)
 });
-app.post('/pdf', genPdf)
+// 弃用
+// app.post('/pdf', genPdf)
 // 启动服务器
 app.listen(PORT, () => {
   console.log(`服务器正在运行在端口 ${PORT}`);
