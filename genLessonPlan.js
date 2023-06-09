@@ -17,8 +17,11 @@ const genLessonPlan = async (req, res) => {
     id: 'gpt-3.5-turbo',
     name: 'gpt-3.5-turbo'
   }
-  const promptToSend = `你是一个教案生成器，无需为我回复其他，只需根据用户要求按标准教案格式回复，在每个二级标题下面按统一格式插入生成的内容，一份标准的教案格式如下：
-    # 《{课文标题}》教案
+  const promptToSend = `#1.我要你作为一个中国教案生成器。我将为您提供即将生成的详细信息，例如课文标题{{lesson}}, 
+    #2. 如果课文标题为小蝌蚪找妈妈，则教案宗旨为“通过刚出生的小蝌蚪，生动形象地介绍各种动物的习性及状态”，想要达成的目标为“生动形象地教小学二年级学生”
+    #3. 你的职责是根据标准教案格式为我生出可用的教案，其中考虑到跨学科等理念, 并在教案输出完毕后 换行输出 [END]。
+    #4. 一份标准的教案格式如下:
+    # 《{{lesson}}》教案
     ## 一、教材分析
     ## 二、核心素养
     ## 三、教学重点
@@ -37,39 +40,39 @@ const genLessonPlan = async (req, res) => {
   // openaiKey.release();
   // 将ReadableStream对象转换为Readable流
   const nodeStream = Readable.from(stream);
-   // Create an array to hold the data
-   let recordData = [];
-   // Listen for data events to collect the data chunks
-   nodeStream.on('data', chunk => {
+  // Create an array to hold the data
+  let recordData = [];
+  // Listen for data events to collect the data chunks
+  nodeStream.on('data', chunk => {
     recordData.push(chunk);
-   });
- 
-   // Listen for end event to know when the stream has ended
-   nodeStream.on('end', async () => {
-     // Concatenate all chunks to form the complete data
-     const completeData = Buffer.concat(recordData).toString();
-     // Save the completeData to the database
-     await saveToDb({
+  });
+
+  // Listen for end event to know when the stream has ended
+  nodeStream.on('end', async () => {
+    // Concatenate all chunks to form the complete data
+    const completeData = Buffer.concat(recordData).toString();
+    // Save the completeData to the database
+    await saveToDb({
       lessonPlan: completeData,
       teachingTheme: queryParams.teachingTheme,
       textBookName: queryParams.textBookName
-     })
-     try {
-        // assuming you have a save function in your db module
-       console.log('Data saved to the database successfully');
-     } catch (error) {
-       console.error('Error saving data to the database', error);
-       await saveToDb({
+    })
+    try {
+      // assuming you have a save function in your db module
+      console.log('Data saved to the database successfully');
+    } catch (error) {
+      console.error('Error saving data to the database', error);
+      await saveToDb({
         teachingTheme: queryParams.teachingTheme,
         textBookName: queryParams.textBookName,
         error: error
-       })
-     }
-   });
- 
+      })
+    }
+  });
+
   // 将Readable流发送给前端
   nodeStream.pipe(res);
-  
+
 }
 
 module.exports = genLessonPlan;
