@@ -14,8 +14,8 @@ const saveToDb = async (data) => {
 
 const genLessonPlan = async (req, res) => {
   const model = {
-    id: 'gpt-4',
-    name: 'gpt-4'
+    id: 'gpt-3.5-turbo',
+    name: 'gpt-3.5-turbo'
   }
   const promptToSend = `1.我要你作为一个中国教案生成器。我将为您提供即将生成的详细信息，例如课文标题{{lesson}}, 
     2. 如果课文标题为小蝌蚪找妈妈，则教案宗旨为“通过刚出生的小蝌蚪，生动形象地介绍各种动物的习性及状态”，想要达成的目标为“生动形象地教小学二年级学生”
