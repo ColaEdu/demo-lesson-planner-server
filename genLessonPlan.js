@@ -43,6 +43,7 @@ const genLessonPlan = async (req, res) => {
   let recordData = [];
   // Listen for data events to collect the data chunks
   nodeStream.on('data', chunk => {
+    console.log('chunk--', chunk)
     recordData.push(chunk);
   });
 
